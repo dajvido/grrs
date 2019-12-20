@@ -17,7 +17,10 @@ func InFile(args *cl.Args) ([]string, error) {
 		return nil, errors.Wrap(err, args.Path)
 	}
 	lines, err := scanFileForMatches(args.Pattern, file)
-	return lines, errors.Wrap(err, args.Path)
+	if err != nil {
+		return nil, errors.Wrap(err, args.Path)
+	}
+	return lines, nil
 }
 
 func scanFileForMatches(pattern string, file io.Reader) ([]string, error) {
@@ -29,5 +32,9 @@ func scanFileForMatches(pattern string, file io.Reader) ([]string, error) {
 			lines = append(lines, strings.TrimSpace(line))
 		}
 	}
-	return lines, scanner.Err()
+	err := scanner.Err()
+	if err != nil {
+		return nil, errors.Wrap(err, pattern)
+	}
+	return lines, nil
 }
