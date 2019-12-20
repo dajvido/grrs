@@ -7,15 +7,17 @@ import (
 	"strings"
 
 	"github.com/dajvido/grrs/internal/cl"
+	"github.com/pkg/errors"
 )
 
 func InFile(args *cl.Args) ([]string, error) {
 	file, err := os.Open(args.Path)
 	defer file.Close()
 	if err != nil {
-		return []string{}, err
+		return nil, errors.Wrap(err, args.Path)
 	}
-	return scanFileForMatches(args.Pattern, file)
+	lines, err := scanFileForMatches(args.Pattern, file)
+	return lines, errors.Wrap(err, args.Path)
 }
 
 func scanFileForMatches(pattern string, file io.Reader) ([]string, error) {

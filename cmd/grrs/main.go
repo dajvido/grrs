@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/dajvido/grrs/internal/cl"
 	"github.com/dajvido/grrs/internal/matches"
+	"github.com/pkg/errors"
 	"github.com/urfave/cli/v2"
 )
 
@@ -33,5 +35,5 @@ func main() {
 	}
 
 	err := app.Run(os.Args)
-	check(err)
+	check(errors.Wrap(err, strings.Join(os.Args, ", ")))
 }
