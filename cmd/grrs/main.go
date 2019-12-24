@@ -12,12 +12,14 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// check validate an error and log it.
 func check(e error) {
 	if e != nil {
 		log.Fatal(e)
 	}
 }
 
+// main initialise cli and check for errors.
 func main() {
 	app := &cli.App{
 		Name:  "grrs",
